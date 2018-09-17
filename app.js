@@ -1,8 +1,11 @@
 const express = require('express');
+const indexRouter = require('./src/routes/index');
 
 const app = express()
 app.use(express.json())
 
-console.log("in app")
+indexRouter(app)
+
+
 
 module.exports = app;
