@@ -7,11 +7,11 @@ const ShaftModel = (sequelize, DataTypes) => {
     },
     brand: {
       type: DataTypes.STRING,
-      required: true
+      allowNull: false
     },
     model: {
       type: DataTypes.STRING,
-      required: true
+      allowNull: false
     },
     flex: {
       type: DataTypes.ENUM(
@@ -24,11 +24,11 @@ const ShaftModel = (sequelize, DataTypes) => {
         "2x-stiff",
         "3x-stiff"
       ),
-      required: true
+      allowNull: false
     },
     material: {
       type: DataTypes.ENUM('steel', 'graphite', 'hybrid'),
-      required: true
+      allowNull: false
     }
   });
 };

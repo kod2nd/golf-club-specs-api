@@ -10,15 +10,15 @@ const ClubModel = (sequelize, DataTypes) => {
     model: DataTypes.STRING,
     loft: {
       type: DataTypes.STRING,
-      required: true
+      allowNull: false
     },
     lie: {
       type: DataTypes.STRING,
-      required: true
+      allowNull: false
     },
     length: {
       type: DataTypes.STRING,
-      required: true
+      allowNull: false
     }
   });
 };

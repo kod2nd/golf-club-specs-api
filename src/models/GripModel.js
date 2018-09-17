@@ -7,19 +7,19 @@ const GripModel = (sequelize, DataTypes) => {
       },
       brand: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
       },
       model: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
       },
       size: {
         type: DataTypes.ENUM('junior', 'ladies','standard','mid-size', 'jumbo'),
-        required: true
+        allowNull: false
       },
       wraps: {
           type: DataTypes.STRING,
-          required: true
+          allowNull: false
         }
     });
   };

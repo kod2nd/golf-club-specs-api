@@ -4,8 +4,12 @@ router.use(express.json());
 const { User } = require("../config/sequelizeConfig");
 
 router.post("/", async (req, res, next) => {
-  const user = await User.create(req.body);
-  res.status(201).json(user);
+  try {
+    const user = await User.create(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    next(error)
+  }
 });
 
 module.exports = app => {
