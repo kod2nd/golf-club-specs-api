@@ -1,7 +1,7 @@
 const express = require("express");
 const request = require("supertest");
 const usersRouter = require("../routes/users");
-const { sequelizeTest } = require("../tests/testDbConfig");
+const { sequelize } = require("../config/sequelizeConfig");
 
 const testApp = express();
 usersRouter(testApp);
@@ -19,7 +19,7 @@ const sendPostRequest = async data => {
 
 describe("Users test", () => {
   beforeEach(async () => {
-    await sequelizeTest.sync({ force: true });
+    await sequelize.sync({ force: true });
   });
 
   describe("/POST", () => {
@@ -30,6 +30,6 @@ describe("Users test", () => {
   });
 
   afterEach(async () => {
-    await sequelizeTest.drop();
+    await sequelize.drop();
   });
 });
