@@ -18,12 +18,12 @@ const Shaft = ShaftModel(sequelize, Sequelize)
 const Grip = GripModel(sequelize, Sequelize)
 
 // Associations
-User.hasMany(Club, {foreignKey: 'club_id'})
-Club.belongsTo(User, {foreignKey: 'club_id'})
-Club.hasOne(Shaft, {foreignKey: 'shaft_id'})
-Club.hasOne(Grip, {foreignKey: 'grip_id'})
-Shaft.belongsTo(Club, {foreignKey: 'shaft_id'})
-Grip.belongsTo(Club, {foreignKey: 'grip_id'})
+User.hasMany(Club, {foreignKey: 'user_id'})
+Club.belongsTo(User, {foreignKey: 'user_id'})
+Club.hasOne(Shaft, {foreignKey: 'club_id'})
+Club.hasOne(Grip, {foreignKey: 'club_id'})
+Shaft.belongsTo(Club, {foreignKey: 'club_id'})
+Grip.belongsTo(Club, {foreignKey: 'club_id'})
 
 module.exports = {
     sequelize,

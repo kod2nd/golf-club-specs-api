@@ -5,7 +5,7 @@ const ClubModel = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    number: Datatypes.STRING,
+    number: DataTypes.STRING,
     brand: DataTypes.STRING,
     model: DataTypes.STRING,
     loft: {

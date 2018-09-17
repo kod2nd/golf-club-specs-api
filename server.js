@@ -1,10 +1,9 @@
-const app = require("../app");
-const { sequelize } = require("../config/sequelizeConfig");
+const app = require("./app");
+const { sequelize } = require("./src/config/sequelizeConfig");
 
 const connectToDB = async () => {
-    await sequelize.sync()
+    await sequelize.sync({force: true})
 }
-
 connectToDB()
 
 const server = app.listen(process.env.PORT || 3000, () => {
