@@ -7,5 +7,5 @@ router.get("/", (req, res, next) => {
 });
 
 module.exports = (app) => {
-  app.get("/", router);
+  app.use("/", router);
 };

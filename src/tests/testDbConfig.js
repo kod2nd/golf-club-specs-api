@@ -1,21 +1,21 @@
 const Sequelize = require("sequelize");
 require("dotenv").config();
-const { DB_DATABASENAME, DB_USERNAME, DB_PASSWORD } = process.env;
+const { DB_TEST_DATABASENAME, DB_USERNAME, DB_PASSWORD } = process.env;
 const UserModel = require("../models/UserModel");
 const ClubModel = require("../models/ClubModel");
 const ShaftModel = require("../models/ShaftModel");
 const GripModel = require("../models/GripModel");
 
-const sequelize = new Sequelize(DB_DATABASENAME, DB_USERNAME, DB_PASSWORD, {
+const sequelizeTest = new Sequelize(DB_TEST_DATABASENAME, DB_USERNAME, DB_PASSWORD, {
   host: "localhost",
   dialect: "postgres"
 });
 
 // Models
-const User = UserModel(sequelize, Sequelize);
-const Club = ClubModel(sequelize, Sequelize);
-const Shaft = ShaftModel(sequelize, Sequelize);
-const Grip = GripModel(sequelize, Sequelize);
+const User = UserModel(sequelizeTest, Sequelize);
+const Club = ClubModel(sequelizeTest, Sequelize);
+const Shaft = ShaftModel(sequelizeTest, Sequelize);
+const Grip = GripModel(sequelizeTest, Sequelize);
 
 // Associations
 User.hasMany(Club);
@@ -26,7 +26,7 @@ Shaft.belongsTo(Club);
 Grip.belongsTo(Club);
 
 module.exports = {
-  sequelize,
+  sequelizeTest,
   Sequelize,
   User,
   Club,
