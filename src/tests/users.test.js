@@ -7,13 +7,15 @@ const testApp = express();
 usersRouter(testApp);
 
 const testUser = {
-    name: "testUser1",
-    email: "abc@123.com"
-}
+  name: "testUser1",
+  email: "abc@123.com"
+};
 
-const sendPostRequest = async (data) => {
-    return await request(testApp).post('/users').send(data)
-}
+const sendPostRequest = async data => {
+  return await request(testApp)
+    .post("/users")
+    .send(data);
+};
 
 describe("Users test", () => {
   beforeEach(async () => {
@@ -21,9 +23,9 @@ describe("Users test", () => {
   });
 
   describe("/POST", () => {
-      it("To have a response status of 201", async () => {
-        const response = await sendPostRequest(testUser)
-        expect(response.status).toBe(201)
+    it("To have a response status of 201", async () => {
+      const response = await sendPostRequest(testUser);
+      expect(response.status).toBe(201);
     });
   });
 
