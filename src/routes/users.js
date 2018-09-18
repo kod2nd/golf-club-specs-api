@@ -33,10 +33,16 @@ router.post(
   "/:userId/clubs",
   tryCatchWrapper(async (req, res, next) => {
     const { shaft, grip } = req.body;
+    
     const club = await Club.create(req.body);
-    const clubShaft = await Shaft.findOrCreate({where: {...shaft, clubId: club.id}})
-    console.log("HERERERERERERE", clubShaft)
-    res.status(201).json(club);
+    await Shaft.findOrCreate({ where: { ...shaft, clubId: club.id } });
+    await Grip.findOrCreate({ where: { ...grip, clubId: club.id } });
+
+    const clubWithShaftAndGrip = await Club.findOne({
+      where: { id: club.id },
+      include: [Shaft, Grip]
+    });
+    res.status(201).json(clubWithShaftAndGrip);
   })
 );
 
