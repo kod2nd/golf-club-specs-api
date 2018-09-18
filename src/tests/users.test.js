@@ -11,6 +11,11 @@ const testUser = {
   email: "abc@123.com"
 };
 
+const testUser2 = {
+  name: "testUser2",
+  email: "abcd@1234.com"
+};
+
 const sendPostRequest = async data => {
   return await request(testApp)
     .post("/users")
@@ -29,11 +34,41 @@ describe("Users test", () => {
       expect(response.status).toBe(201);
       expect(user.name).toBe(testUser.name);
     });
-    it("Does not create an entry in the User table when a name or email or both are left empty", async () => {
+    it("Does not create an entry in the User table when empty body is passed", async () => {
       const response = await sendPostRequest();
       const user = await User.findOne({ where: { name: testUser.name } });
       expect(response.status).toBe(500);
       expect(user).toBe(null);
+    });
+    it("Does not create an entry in the User table when email is left empty", async () => {
+      const response = await sendPostRequest({ name: "test2" });
+      const user = await User.findOne({ where: { name: "test2" } });
+      expect(response.status).toBe(500);
+      expect(user).toBe(null);
+    });
+    it("Does not create an entry in the User table when name is left empty", async () => {
+      const response = await sendPostRequest({ email: "testemail@email.com" });
+      const user = await User.findOne({
+        where: { email: "testemail@email.com" }
+      });
+      expect(response.status).toBe(500);
+      expect(user).toBe(null);
+    });
+    it("Creates more than 1 entry when multiple postrequests are sent", async () => {
+      await sendPostRequest(testUser);
+      await sendPostRequest(testUser2);
+
+      const users = await User.findAll();
+      expect(users.length).toBe(2);
+    });
+    it("Does not create an entry if email is not unique", async () => {
+      await sendPostRequest(testUser);
+      await sendPostRequest({
+        name: "duplicateEmail",
+        email: "abc@123.com"
+      });
+      const users = await User.findAll();
+      expect(users.length).toBe(1);
     });
   });
 
