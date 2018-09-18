@@ -22,12 +22,22 @@ const testUser2 = {
   email: "abcd@1234.com"
 };
 
+const testClub = {
+  number: "PW",
+  brand: "mizuno",
+  model: "MP-33",
+  loft: "48",
+  lie: "63",
+  length: "34.5"
+}
+
 module.exports = {
   testApp,
   sendPostRequest,
   sendGetRequest,
   testData: {
     testUser,
-    testUser2
+    testUser2,
+    testClub
   }
 };
