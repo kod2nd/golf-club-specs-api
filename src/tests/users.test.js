@@ -75,8 +75,9 @@ describe("Users test", () => {
     });
     it("/users clubs should be inluded in the response of Get users ", async () => {
       const response = await sendGetRequest("/users");
+      const [firstUser] = response.body;
       expect(response.status).toBe(200);
-      expect(response.body[0].clubs).toBeDefined();
+      expect(firstUser.clubs).toBeDefined();
     });
     it("/users/:userid should return a single user that corresponds to the userId ", async () => {
       const response = await sendGetRequest("/users/1");
@@ -84,10 +85,18 @@ describe("Users test", () => {
       expect(response.body.name).toBe(testUser.name);
     });
     it("/users/:userid clubs should be inluded in the response of Get user ", async () => {
-        const response = await sendGetRequest("/users/1");
-        expect(response.status).toBe(200);
-        expect(response.body.clubs).toBeDefined();
-      });
+      const response = await sendGetRequest("/users/1");
+      expect(response.status).toBe(200);
+      expect(response.body.clubs).toBeDefined();
+    });
+    it("/users/:userid clubs should also contain grips and shafts ", async () => {
+      await sendPostRequest("/users/1/clubs", { ...testClub, userId: 1 });
+      const response = await sendGetRequest("/users/1");
+      const [club] = response.body.clubs;
+      expect(response.status).toBe(200);
+      expect(club.shaft).toBeDefined();
+      expect(club.grip).toBeDefined();
+    });
   });
 
   describe("User Clubs", () => {
@@ -96,25 +105,34 @@ describe("Users test", () => {
     });
     describe("/POST /users/:userId/clubs", () => {
       it("Creates an entry in the Clubs table when a club is passed to the body ", async () => {
-        const response = await sendPostRequest("/users/1/clubs", {...testClub, userId: 1});
-        expect(response.status).toBe(201)
+        const response = await sendPostRequest("/users/1/clubs", {
+          ...testClub,
+          userId: 1
+        });
+        expect(response.status).toBe(201);
         expect(response.body.brand).toBe(testClub.brand);
       });
       it("Response Body should have shafts and shaft should match testClubs shaft ", async () => {
-        const response = await sendPostRequest("/users/1/clubs", {...testClub, userId: 1});
-        expect(response.status).toBe(201)
-        expect(response.body.shaft).toBeDefined()
+        const response = await sendPostRequest("/users/1/clubs", {
+          ...testClub,
+          userId: 1
+        });
+        expect(response.status).toBe(201);
+        expect(response.body.shaft).toBeDefined();
         expect(response.body.shaft.brand).toBe(testClub.shaft.brand);
       });
       it("Response Body should have grip and the grip should match testClubs grips ", async () => {
-        const response = await sendPostRequest("/users/1/clubs", {...testClub, userId: 1});
-        expect(response.status).toBe(201)
-        expect(response.body.grip).toBeDefined()
+        const response = await sendPostRequest("/users/1/clubs", {
+          ...testClub,
+          userId: 1
+        });
+        expect(response.status).toBe(201);
+        expect(response.body.grip).toBeDefined();
         expect(response.body.grip.brand).toBe(testClub.grip.brand);
       });
       it("When creating a club, Throws an error if no userId is passed", async () => {
-        const response = await sendPostRequest("/users/1/clubs", {testClub});
-        expect(response.status).toBe(500)
+        const response = await sendPostRequest("/users/1/clubs", { testClub });
+        expect(response.status).toBe(500);
       });
     });
   });
