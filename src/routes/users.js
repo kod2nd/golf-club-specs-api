@@ -20,6 +20,15 @@ router.get(
   })
 );
 
+router.get(
+  "/:userId",
+  tryCatchWrapper(async (req, res, next) => {
+    const userId = req.params.userId
+    const user = await User.findById(userId);
+    res.status(200).json(user);
+  })
+);
+
 module.exports = app => {
   app.use("/users", router);
 };
