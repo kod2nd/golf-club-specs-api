@@ -2,7 +2,7 @@ const app = require("./app");
 const { sequelize } = require("./src/config/sequelizeConfig");
 
 const connectToDB = async () => {
-    await sequelize.sync()
+    await sequelize.sync({force: true})
 }
 connectToDB()
 

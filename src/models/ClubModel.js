@@ -6,6 +6,10 @@ const ClubModel = (sequelize, DataTypes) => {
       autoIncrement: true
     },
     number: DataTypes.STRING,
+    category: {
+      type: DataTypes.ENUM("driver", "wood", "hybrid", "iron", "putter"),
+      allowNull: false
+    },
     brand: DataTypes.STRING,
     model: DataTypes.STRING,
     loft: {
