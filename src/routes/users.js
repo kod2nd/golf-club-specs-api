@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 router.use(express.json());
-const { User } = require("../config/sequelizeConfig");
+const { User, Club, Shaft, Grip } = require("../config/sequelizeConfig");
 const tryCatchWrapper = require("../middleware/tryCatchWrapper");
 
 router.post(
@@ -26,6 +26,15 @@ router.get(
     const userId = req.params.userId
     const user = await User.findById(userId);
     res.status(200).json(user);
+  })
+);
+
+router.post(
+  "/:userId/clubs",
+  tryCatchWrapper(async (req, res, next) => {
+    console.log("HELLLOOOOOOOO",req.params)
+    const club = await Club.create(req.body);
+    res.status(201).json(club);
   })
 );
 

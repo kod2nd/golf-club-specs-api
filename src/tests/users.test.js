@@ -1,10 +1,9 @@
-const express = require("express");
-const request = require("supertest");
+const {testApp, sendPostRequest, sendGetRequest} = require('./utils/testUtils');
 const usersRouter = require("../routes/users");
 const { sequelize, User } = require("../config/sequelizeConfig");
 
-const testApp = express();
 usersRouter(testApp);
+
 
 const testUser = {
   name: "testUser1",
@@ -16,14 +15,7 @@ const testUser2 = {
   email: "abcd@1234.com"
 };
 
-const sendPostRequest = async (endpoint, data) => {
-  return await request(testApp)
-    .post(endpoint)
-    .send(data);
-};
-const sendGetRequest = async endPoint => {
-  return await request(testApp).get(endPoint);
-};
+
 
 describe("Users test", () => {
   beforeEach(async () => {
@@ -94,6 +86,15 @@ describe("Users test", () => {
       expect(response.status).toBe(200);
       expect(response.body.name).toBe(testUser.name);
     });
+  });
+
+  describe.only('User Clubs', () => {
+      describe("/POST /users/:userId/clubs", () => {
+        it('Creates an entry in the Clubs table when a name and email are passed in the body ', async() => {
+          const response = await sendPostRequest("/users/1/clubs")
+          expect(response.body).toBe(2)
+        });
+      });
   });
 
   afterEach(async () => {
