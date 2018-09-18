@@ -12,8 +12,22 @@ const sendGetRequest = async endPoint => {
   return await request(testApp).get(endPoint);
 };
 
+const testUser = {
+  name: "testUser1",
+  email: "abc@123.com"
+};
+
+const testUser2 = {
+  name: "testUser2",
+  email: "abcd@1234.com"
+};
+
 module.exports = {
   testApp,
   sendPostRequest,
-  sendGetRequest
+  sendGetRequest,
+  testData: {
+    testUser,
+    testUser2
+  }
 };

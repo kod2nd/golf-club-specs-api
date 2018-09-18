@@ -1,21 +1,10 @@
-const {testApp, sendPostRequest, sendGetRequest} = require('./utils/testUtils');
+const {testApp, sendPostRequest, sendGetRequest,testData} = require('./utils/testUtils');
 const usersRouter = require("../routes/users");
 const { sequelize, User } = require("../config/sequelizeConfig");
 
+const {testUser, testUser2} = testData
+
 usersRouter(testApp);
-
-
-const testUser = {
-  name: "testUser1",
-  email: "abc@123.com"
-};
-
-const testUser2 = {
-  name: "testUser2",
-  email: "abcd@1234.com"
-};
-
-
 
 describe("Users test", () => {
   beforeEach(async () => {
@@ -88,7 +77,7 @@ describe("Users test", () => {
     });
   });
 
-  describe.only('User Clubs', () => {
+  describe.skip('User Clubs', () => {
       describe("/POST /users/:userId/clubs", () => {
         it('Creates an entry in the Clubs table when a name and email are passed in the body ', async() => {
           const response = await sendPostRequest("/users/1/clubs")
