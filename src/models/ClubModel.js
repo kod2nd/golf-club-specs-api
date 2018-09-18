@@ -7,7 +7,14 @@ const ClubModel = (sequelize, DataTypes) => {
     },
     number: DataTypes.STRING,
     category: {
-      type: DataTypes.ENUM("driver", "wood", "hybrid", "iron", "putter"),
+      type: DataTypes.ENUM(
+        "driver",
+        "wood",
+        "hybrid",
+        "iron",
+        "wedge",
+        "putter"
+      ),
       allowNull: false
     },
     brand: DataTypes.STRING,

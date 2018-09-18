@@ -29,6 +29,10 @@ const ShaftModel = (sequelize, DataTypes) => {
     material: {
       type: DataTypes.ENUM('steel', 'graphite', 'hybrid'),
       allowNull: false
+    },
+    clubId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     }
   });
 };

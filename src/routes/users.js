@@ -15,7 +15,7 @@ router.post(
 router.get(
   "/",
   tryCatchWrapper(async (req, res, next) => {
-    const users = await User.findAll({include: [Club]});
+    const users = await User.findAll({ include: [Club] });
     res.status(200).json(users);
   })
 );
@@ -23,8 +23,8 @@ router.get(
 router.get(
   "/:userId",
   tryCatchWrapper(async (req, res, next) => {
-    const userId = req.params.userId
-    const user = await User.findById(userId, {include: [Club]});
+    const userId = req.params.userId;
+    const user = await User.findById(userId, { include: [Club] });
     res.status(200).json(user);
   })
 );
@@ -32,7 +32,7 @@ router.get(
 router.post(
   "/:userId/clubs",
   tryCatchWrapper(async (req, res, next) => {
-    // console.log("HELLLOOOOOOOO",req.params)
+    const { shaft, grip } = req.body;
     const club = await Club.create(req.body);
     res.status(201).json(club);
   })
