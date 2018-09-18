@@ -1,8 +1,13 @@
-const {testApp, sendPostRequest, sendGetRequest,testData} = require('./utils/testUtils');
+const {
+  testApp,
+  sendPostRequest,
+  sendGetRequest,
+  testData
+} = require("./utils/testUtils");
 const usersRouter = require("../routes/users");
 const { sequelize, User } = require("../config/sequelizeConfig");
 
-const {testUser, testUser2} = testData
+const { testUser, testUser2, testClub } = testData;
 
 usersRouter(testApp);
 
@@ -77,13 +82,17 @@ describe("Users test", () => {
     });
   });
 
-  describe.skip('User Clubs', () => {
-      describe("/POST /users/:userId/clubs", () => {
-        it('Creates an entry in the Clubs table when a name and email are passed in the body ', async() => {
-          const response = await sendPostRequest("/users/1/clubs")
-          expect(response.body).toBe(2)
-        });
+  describe("User Clubs", () => {
+    beforeEach(async () => {
+      await sendPostRequest("/users", testUser);
+    });
+    describe("/POST /users/:userId/clubs", () => {
+      it("Creates an entry in the Clubs table when a name and email are passed in the body ", async () => {
+        const response = await sendPostRequest("/users/1/clubs", {...testClub, userId: 1});
+        expect(response.status).toBe(201)
+        expect(response.body.brand).toBe("mizuno");
       });
+    });
   });
 
   afterEach(async () => {

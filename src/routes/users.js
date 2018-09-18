@@ -32,7 +32,7 @@ router.get(
 router.post(
   "/:userId/clubs",
   tryCatchWrapper(async (req, res, next) => {
-    console.log("HELLLOOOOOOOO",req.params)
+    // console.log("HELLLOOOOOOOO",req.params)
     const club = await Club.create(req.body);
     res.status(201).json(club);
   })
