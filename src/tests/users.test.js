@@ -21,6 +21,9 @@ const sendPostRequest = async data => {
     .post("/users")
     .send(data);
 };
+const sendGetRequest = async () => {
+  return await request(testApp).get("/users");
+};
 
 describe("Users test", () => {
   beforeEach(async () => {
@@ -59,7 +62,7 @@ describe("Users test", () => {
       await sendPostRequest(testUser2);
 
       const users = await User.findAll();
-      expect(users.length).toBe(2);
+      expect(users).toHaveLength(2);
     });
     it("Does not create an entry if email is not unique", async () => {
       await sendPostRequest(testUser);
@@ -68,7 +71,19 @@ describe("Users test", () => {
         email: "abc@123.com"
       });
       const users = await User.findAll();
-      expect(users.length).toBe(1);
+      expect(users).toHaveLength(1);
+    });
+  });
+
+  describe("/GET", () => {
+    it("should return a list of all users ", async () => {
+      // Setup
+      await sendPostRequest(testUser);
+      await sendPostRequest(testUser2);
+      // Tests
+      const response = await sendGetRequest()
+      expect(response.status).toBe(200)
+      expect(response.body).toHaveLength(2);
     });
   });
 
