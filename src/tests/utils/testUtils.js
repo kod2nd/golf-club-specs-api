@@ -27,7 +27,6 @@ const testShaft = {
   model: "tour 120",
   material: "steel",
   flex: "stiff",
-  clubId: 1,
 }
 
 const testGrip = {
@@ -35,7 +34,6 @@ const testGrip = {
   model: "mcc",
   size: "standard",
   wraps: "1",
-  clubId: 1,
 }
 
 const testClub = {
