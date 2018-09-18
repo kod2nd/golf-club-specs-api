@@ -69,17 +69,29 @@ describe("Users test", () => {
       await sendPostRequest("/users", testUser);
       await sendPostRequest("/users", testUser2);
     });
-    it("should return a list of all users ", async () => {
+    it("/users should return a list of all users ", async () => {
       // Tests
       const response = await sendGetRequest("/users");
       expect(response.status).toBe(200);
       expect(response.body).toHaveLength(2);
     });
-    it("/:userId should return a single user that corresponds to the userId ", async () => {
+    it("/users clubs should be inluded in the response of Get users ", async () => {
+      // Tests
+      const response = await sendGetRequest("/users");
+      expect(response.status).toBe(200);
+      expect(response.body[0].clubs).toBeDefined();
+    });
+    it("/users/:userid should return a single user that corresponds to the userId ", async () => {
       const response = await sendGetRequest("/users/1");
       expect(response.status).toBe(200);
       expect(response.body.name).toBe(testUser.name);
     });
+    it("/users/:userid clubs should be inluded in the response of Get user ", async () => {
+        // Tests
+        const response = await sendGetRequest("/users/1");
+        expect(response.status).toBe(200);
+        expect(response.body.clubs).toBeDefined();
+      });
   });
 
   describe("User Clubs", () => {
@@ -91,6 +103,10 @@ describe("Users test", () => {
         const response = await sendPostRequest("/users/1/clubs", {...testClub, userId: 1});
         expect(response.status).toBe(201)
         expect(response.body.brand).toBe("mizuno");
+      });
+      it("When creating a club, Throws an error if no userId is passed", async () => {
+        const response = await sendPostRequest("/users/1/clubs", {testClub});
+        expect(response.status).toBe(500)
       });
     });
   });

@@ -15,7 +15,7 @@ router.post(
 router.get(
   "/",
   tryCatchWrapper(async (req, res, next) => {
-    const users = await User.findAll();
+    const users = await User.findAll({include: [Club]});
     res.status(200).json(users);
   })
 );
@@ -24,7 +24,7 @@ router.get(
   "/:userId",
   tryCatchWrapper(async (req, res, next) => {
     const userId = req.params.userId
-    const user = await User.findById(userId);
+    const user = await User.findById(userId, {include: [Club]});
     res.status(200).json(user);
   })
 );
