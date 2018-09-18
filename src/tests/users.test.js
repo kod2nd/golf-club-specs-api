@@ -99,12 +99,12 @@ describe("Users test", () => {
       await sendPostRequest("/users", testUser);
     });
     describe("/POST /users/:userId/clubs", () => {
-      it("Creates an entry in the Clubs table when a name and email are passed in the body ", async () => {
+      it.only("Creates an entry in the Clubs table when a name and email are passed in the body ", async () => {
         const response = await sendPostRequest("/users/1/clubs", {...testClub, userId: 1});
         expect(response.status).toBe(201)
         expect(response.body.brand).toBe("mizuno");
       });
-      it("When creating a club, Throws an error if no userId is passed", async () => {
+      it.skip("When creating a club, Throws an error if no userId is passed", async () => {
         const response = await sendPostRequest("/users/1/clubs", {testClub});
         expect(response.status).toBe(500)
       });
