@@ -3,6 +3,7 @@ const router = express.Router();
 router.use(express.json());
 const { User, Club, Shaft, Grip } = require("../config/sequelizeConfig");
 const tryCatchWrapper = require("../middleware/tryCatchWrapper");
+const { updateClubComponent } = require("./utils/utils");
 
 router.post(
   "/",
@@ -53,32 +54,20 @@ router.put(
   tryCatchWrapper(async (req, res, next) => {
     const { shaft, grip, ...restOfClubSpecs } = req.body;
     const { clubId, userId } = req.params;
-
-    await Club.update(restOfClubSpecs, {
+    const clubLocater = {
       where: { id: clubId, userId }
-    });
+    };
+    const componentLocater = { where: { clubId } };
 
-    const updateClubComponent = (key, Model, sequelizeWhereOption) => {
-      return async () => {
-        if(key){
-          await Model.update(key, sequelizeWhereOption)
-        }
-      }
-    }
+    await Club.update(restOfClubSpecs, clubLocater);
+    await updateClubComponent(shaft, Shaft, componentLocater);
+    await updateClubComponent(grip, Grip, componentLocater);
 
-    const clubToUpdate = { where: { clubId } };
-    // if(shaft) {
-    //   await Shaft.update(shaft, clubToUpdate)
-    // }
-    // await Grip.update(grip, clubToUpdate);
-    await updateClubComponent(shaft, Shaft, clubToUpdate )
-
-    
     const updatedClub = await Club.findOne({
-      where: { id: clubId, userId },
+      ...clubLocater,
       include: [Shaft, Grip]
     });
-    
+
     res.status(200).json(updatedClub);
   })
 );

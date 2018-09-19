@@ -137,7 +137,7 @@ describe("Users test", () => {
         expect(response.status).toBe(500);
       });
     });
-    describe.only("/PUT /users/:userId/clubs", () => {
+    describe("/PUT /users/:userId/clubs", () => {
       beforeEach(async () => {
         await sendPostRequest("/users/1/clubs", {
           ...testClub,
@@ -154,7 +154,7 @@ describe("Users test", () => {
       });
       it("should be able to update more than 1 field", async () => {
         const updatedBrand = "updated brand";
-        const updatedLoft = "47"
+        const updatedLoft = "47";
         const response = await sendPutRequest("/users/1/clubs/1", {
           brand: updatedBrand,
           loft: updatedLoft
@@ -163,14 +163,27 @@ describe("Users test", () => {
         expect(response.body.brand).toBe(updatedBrand);
         expect(response.body.loft).toBe(updatedLoft);
       });
-      it.skip("should be able to update the the shaft (another table)", async () => {
+      it("should be able to update the shaft (another table)", async () => {
         const newShaftFlex = "senior";
         const response = await sendPutRequest("/users/1/clubs/1", {
-            shaft: {flex: newShaftFlex}
+          shaft: { flex: newShaftFlex }
         });
         expect(response.status).toBe(200);
-        // expect(response.body.shaft.flex).toBe(newShaftFlex);
         expect(response.body.shaft.flex).toBe(newShaftFlex);
+      });
+      it("should be able to update the club and its components", async () => {
+        const updatedLoft = "47";
+        const newShaftFlex = "senior";
+        const newGripSize = "junior";
+        const response = await sendPutRequest("/users/1/clubs/1", {
+          loft: updatedLoft,
+          shaft: { flex: newShaftFlex },
+          grip: { size: newGripSize }
+        });
+        expect(response.status).toBe(200);
+        expect(response.body.loft).toBe(updatedLoft);
+        expect(response.body.shaft.flex).toBe(newShaftFlex);
+        expect(response.body.grip.size).toBe(newGripSize);
       });
     });
   });
