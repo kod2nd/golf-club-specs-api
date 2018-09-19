@@ -2,6 +2,8 @@ const {
   testApp,
   sendPostRequest,
   sendGetRequest,
+  sendPutRequest,
+  sendDeleteRequest,
   testData
 } = require("./utils/testUtils");
 const usersRouter = require("../routes/users");
@@ -134,6 +136,21 @@ describe("Users test", () => {
         const response = await sendPostRequest("/users/1/clubs", { testClub });
         expect(response.status).toBe(500);
       });
+    });
+    describe.only("/PUT /users/:userId/clubs", () => {
+        beforeEach(async ()=>{
+            await sendPostRequest("/users/1/clubs", {
+                ...testClub,
+                userId: 1
+              })
+        })
+        it('response should return the updated brand of the club', async () => {
+            const updatedBrand = "honma"
+            const response = await sendPutRequest("/users/1/clubs/1", {brand: updatedBrand
+            })
+            expect(response.status).toBe(200)
+            expect(response.body.brand).toBe(updatedBrand)
+        });
     });
   });
 

@@ -15,7 +15,9 @@ router.post(
 router.get(
   "/",
   tryCatchWrapper(async (req, res, next) => {
-    const users = await User.findAll({ include: {model: Club, include: [Shaft, Grip]} });
+    const users = await User.findAll({
+      include: { model: Club, include: [Shaft, Grip] }
+    });
     res.status(200).json(users);
   })
 );
@@ -24,7 +26,9 @@ router.get(
   "/:userId",
   tryCatchWrapper(async (req, res, next) => {
     const userId = req.params.userId;
-    const user = await User.findById(userId, { include: [{model: Club, include: [Shaft, Grip]}] });
+    const user = await User.findById(userId, {
+      include: [{ model: Club, include: [Shaft, Grip] }]
+    });
     res.status(200).json(user);
   })
 );
@@ -42,6 +46,17 @@ router.post(
       include: [Shaft, Grip]
     });
     res.status(201).json(clubWithShaftAndGrip);
+  })
+);
+router.put(
+  "/:userId/clubs/:clubId",
+  tryCatchWrapper(async (req, res, next) => {
+    const updatedSpecs = req.body;
+    const { clubId, userId } = req.params;
+    await Club.update(updatedSpecs,{where: {id: clubId, userId}});
+    const updatedClub = await Club.findOne({where: {id: clubId, userId}});
+
+    res.status(200).json(updatedClub);
   })
 );
 

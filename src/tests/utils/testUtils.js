@@ -8,6 +8,18 @@ const sendPostRequest = async (endpoint, data) => {
     .send(data);
 };
 
+const sendPutRequest = async (endpoint, data) => {
+  return await request(testApp)
+    .put(endpoint)
+    .send(data);
+};
+
+const sendDeleteRequest = async (endpoint, data) => {
+  return await request(testApp)
+    .delete(endpoint)
+    .send(data);
+};
+
 const sendGetRequest = async endPoint => {
   return await request(testApp).get(endPoint);
 };
@@ -52,6 +64,8 @@ module.exports = {
   testApp,
   sendPostRequest,
   sendGetRequest,
+  sendPutRequest,
+  sendDeleteRequest,
   testData: {
     testUser,
     testUser2,
