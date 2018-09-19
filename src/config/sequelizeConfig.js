@@ -34,6 +34,7 @@ if (DATABASE_URL) {
 } else {
   sequelize = new Sequelize(HEROKU_POSTGRESQL_WHITE_URL, {
     dialect: "postgres",
+    ssl: true
     // protocol: "postgres",
     // port: match[4],
     // host: match[3],
