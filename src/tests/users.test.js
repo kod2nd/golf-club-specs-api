@@ -73,7 +73,7 @@ describe("Users test", () => {
     });
   });
 
-  describe.only("/GET", () => {
+  describe("/GET", () => {
     beforeEach(async () => {
       await sendPostRequest("/users", testUser);
       await sendPostRequest("/users", testUser2);
