@@ -194,7 +194,7 @@ describe("Users test", () => {
         expect(response.body.grip.size).toBe(newGripSize);
       });
     });
-    describe.only("/DELETE", () => {
+    describe("/DELETE", () => {
       beforeEach(async () => {
         await sendPostRequest("/users/1/clubs", {
           ...testClub,
@@ -208,9 +208,34 @@ describe("Users test", () => {
       });
       it("deleted club should not be in the Club table ", async () => {
         await sendDeleteRequest("/users/1/clubs/1");
-
-        const club = await Club.findOne({ where: restOfTestClubSpecs });
+        const club = await Club.findOne({ where: restOfTestClubSpecs, include: [Shaft, Grip] });
         expect(club).toBe(null);
+      });
+      it("deleted club should not be in the Shaft table ", async () => {
+          const {id} = await Club.findOne({ where: restOfTestClubSpecs });
+        await sendDeleteRequest("/users/1/clubs/1");
+        const clubShaft = await Shaft.findOne({where: {
+            ...shaft, id
+        }})
+        expect(clubShaft).toBe(null);
+      });
+      it("deleted club should not be in the Grip table ", async () => {
+          const {id} = await Club.findOne({ where: restOfTestClubSpecs });
+        await sendDeleteRequest("/users/1/clubs/1");
+        const clubGrip = await Grip.findOne({where: {
+            ...grip, id
+        }})
+        expect(clubGrip).toBe(null);
+      });
+      it("only deletes the specified club", async () => {
+        await sendPostRequest("/users/1/clubs", {
+            ...testClub,
+            brand: "testClub 2",
+            userId: 1
+          });
+        await sendDeleteRequest("/users/1/clubs/1");
+        const clubs = await Club.findAll()
+        expect(clubs).toHaveLength(1);
       });
     });
   });
