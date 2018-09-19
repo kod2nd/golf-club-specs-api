@@ -18,7 +18,7 @@ const setDatabaseName = env => {
   if (env === "test") {
     return HEROKU_POSTGRESQL_WHITE_URL || DB_TEST_DATABASENAME;
   }
-  return DB_DATABASENAME;
+  return HEROKU_POSTGRESQL_WHITE_URL || DB_DATABASENAME;
 };
 
 let sequelize
