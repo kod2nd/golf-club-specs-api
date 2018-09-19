@@ -3,36 +3,20 @@ const router = express.Router();
 router.use(express.json());
 const { User, Club, Shaft, Grip } = require("../config/sequelizeConfig");
 const tryCatchWrapper = require("../middleware/tryCatchWrapper");
-const { updateClubComponent, DELETE_MESSAGE_SUCCESS } = require("./utils/utils");
+const {
+  updateClubComponent,
+  DELETE_MESSAGE_SUCCESS
+} = require("./utils/utils");
 
-router.post(
-  "/",
-  tryCatchWrapper(async (req, res, next) => {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  })
-);
+const {
+  getAllUsers,
+  getSpecificUser,
+  createUser
+} = require("./utils/usersHelper");
 
-router.get(
-  "/",
-  tryCatchWrapper(async (req, res, next) => {
-    const users = await User.findAll({
-      include: { model: Club, include: [Shaft, Grip] }
-    });
-    res.status(200).json(users);
-  })
-);
-
-router.get(
-  "/:userId",
-  tryCatchWrapper(async (req, res, next) => {
-    const userId = req.params.userId;
-    const user = await User.findById(userId, {
-      include: [{ model: Club, include: [Shaft, Grip] }]
-    });
-    res.status(200).json(user);
-  })
-);
+router.post("/", tryCatchWrapper(createUser()));
+router.get("/", tryCatchWrapper(getAllUsers()));
+router.get("/:userId", tryCatchWrapper(getSpecificUser()));
 
 router.post(
   "/:userId/clubs",
@@ -70,10 +54,13 @@ router.put(
     res.status(200).json(updatedClub);
   })
 );
-router.delete("/:userId/clubs/:clubId", tryCatchWrapper(async (req,res,next) => {
-  await Club.destroy({where: {id: req.params.clubId}})
-  res.status(200).json({message: DELETE_MESSAGE_SUCCESS })
-}))
+router.delete(
+  "/:userId/clubs/:clubId",
+  tryCatchWrapper(async (req, res, next) => {
+    await Club.destroy({ where: { id: req.params.clubId } });
+    res.status(200).json({ message: DELETE_MESSAGE_SUCCESS });
+  })
+);
 
 module.exports = app => {
   app.use("/users", router);

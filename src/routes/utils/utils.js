@@ -8,6 +8,6 @@ const updateClubComponent = async (clubComponent, Model, sequelizeWhereOption) =
 
   module.exports = {
       updateClubComponent,
-      DELETE_MESSAGE_SUCCESS
+      DELETE_MESSAGE_SUCCESS,
   };
   
