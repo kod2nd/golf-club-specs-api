@@ -1,3 +1,5 @@
+const DELETE_MESSAGE_SUCCESS = "Sucessful Delete!"
+
 const updateClubComponent = async (clubComponent, Model, sequelizeWhereOption) => {
         if(clubComponent){
             console.log("KEYYYYYYYYYYYY", clubComponent, Model)
@@ -6,6 +8,7 @@ const updateClubComponent = async (clubComponent, Model, sequelizeWhereOption) =
   }
 
   module.exports = {
-      updateClubComponent
+      updateClubComponent,
+      DELETE_MESSAGE_SUCCESS
   };
   

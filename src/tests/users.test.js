@@ -7,9 +7,17 @@ const {
   testData
 } = require("./utils/testUtils");
 const usersRouter = require("../routes/users");
-const { sequelize, User } = require("../config/sequelizeConfig");
+const {
+  sequelize,
+  User,
+  Club,
+  Shaft,
+  Grip
+} = require("../config/sequelizeConfig");
+const { DELETE_MESSAGE_SUCCESS } = require("../routes/utils/utils");
 
 const { testUser, testUser2, testClub } = testData;
+const {shaft, grip, ...restOfTestClubSpecs} = testClub
 
 usersRouter(testApp);
 
@@ -184,6 +192,25 @@ describe("Users test", () => {
         expect(response.body.loft).toBe(updatedLoft);
         expect(response.body.shaft.flex).toBe(newShaftFlex);
         expect(response.body.grip.size).toBe(newGripSize);
+      });
+    });
+    describe.only("/DELETE", () => {
+      beforeEach(async () => {
+        await sendPostRequest("/users/1/clubs", {
+          ...testClub,
+          userId: 1
+        });
+      });
+      it("should show message saying sucessful delete ", async () => {
+        const response = await sendDeleteRequest("/users/1/clubs/1");
+        expect(response.status).toBe(200);
+        expect(response.body.message).toBe(DELETE_MESSAGE_SUCCESS);
+      });
+      it("deleted club should not be in the Club table ", async () => {
+        await sendDeleteRequest("/users/1/clubs/1");
+
+        const club = await Club.findOne({ where: restOfTestClubSpecs });
+        expect(club).toBe(null);
       });
     });
   });

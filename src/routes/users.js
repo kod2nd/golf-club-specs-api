@@ -3,7 +3,7 @@ const router = express.Router();
 router.use(express.json());
 const { User, Club, Shaft, Grip } = require("../config/sequelizeConfig");
 const tryCatchWrapper = require("../middleware/tryCatchWrapper");
-const { updateClubComponent } = require("./utils/utils");
+const { updateClubComponent, DELETE_MESSAGE_SUCCESS } = require("./utils/utils");
 
 router.post(
   "/",
@@ -67,10 +67,14 @@ router.put(
       ...clubLocater,
       include: [Shaft, Grip]
     });
-
     res.status(200).json(updatedClub);
   })
 );
+router.delete("/:userId/clubs/:clubId", tryCatchWrapper(async (req,res,next) => {
+  await Club.destroy({where: {id: req.params.clubId}})
+
+  res.status(200).json({message: DELETE_MESSAGE_SUCCESS })
+}))
 
 module.exports = app => {
   app.use("/users", router);
