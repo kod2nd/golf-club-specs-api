@@ -138,19 +138,40 @@ describe("Users test", () => {
       });
     });
     describe.only("/PUT /users/:userId/clubs", () => {
-        beforeEach(async ()=>{
-            await sendPostRequest("/users/1/clubs", {
-                ...testClub,
-                userId: 1
-              })
-        })
-        it('response should return the updated brand of the club', async () => {
-            const updatedBrand = "honma"
-            const response = await sendPutRequest("/users/1/clubs/1", {brand: updatedBrand
-            })
-            expect(response.status).toBe(200)
-            expect(response.body.brand).toBe(updatedBrand)
+      beforeEach(async () => {
+        await sendPostRequest("/users/1/clubs", {
+          ...testClub,
+          userId: 1
         });
+      });
+      it("response should return the updated brand of the club", async () => {
+        const updatedBrand = "updated brand";
+        const response = await sendPutRequest("/users/1/clubs/1", {
+          brand: updatedBrand
+        });
+        expect(response.status).toBe(200);
+        expect(response.body.brand).toBe(updatedBrand);
+      });
+      it("should be able to update more than 1 field", async () => {
+        const updatedBrand = "updated brand";
+        const updatedLoft = "47"
+        const response = await sendPutRequest("/users/1/clubs/1", {
+          brand: updatedBrand,
+          loft: updatedLoft
+        });
+        expect(response.status).toBe(200);
+        expect(response.body.brand).toBe(updatedBrand);
+        expect(response.body.loft).toBe(updatedLoft);
+      });
+      it.skip("should be able to update the the shaft (another table)", async () => {
+        const newShaftFlex = "senior";
+        const response = await sendPutRequest("/users/1/clubs/1", {
+            shaft: {flex: newShaftFlex}
+        });
+        expect(response.status).toBe(200);
+        // expect(response.body.shaft.flex).toBe(newShaftFlex);
+        expect(response.body.shaft.flex).toBe(newShaftFlex);
+      });
     });
   });
 
