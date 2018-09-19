@@ -40,10 +40,6 @@ if (HEROKU_POSTGRESQL_WHITE_URL) {
     dialectOptions: {
       ssl: true
     }
-    // protocol: "postgres",
-    // port: match[4],
-    // host: match[3],
-    // logging: true //false
   });
 } else {
   sequelize = new Sequelize(setDatabaseName(), DB_USERNAME, DB_PASSWORD, {
