@@ -6,7 +6,8 @@ const {
   DB_USERNAME,
   DB_PASSWORD,
   NODE_ENV,
-  DATABASE_URL
+  DATABASE_URL,
+  HEROKU_POSTGRESQL_WHITE_URL
 } = process.env;
 const UserModel = require("../models/UserModel");
 const ClubModel = require("../models/ClubModel");
@@ -15,7 +16,7 @@ const GripModel = require("../models/GripModel");
 
 const setDatabaseName = env => {
   if (env === "test") {
-    return DB_TEST_DATABASENAME;
+    return HEROKU_POSTGRESQL_WHITE_URL || DB_TEST_DATABASENAME;
   }
   return DB_DATABASENAME;
 };
