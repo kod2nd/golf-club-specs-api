@@ -15,12 +15,13 @@ const {
   deleteClub
 } = require("./utils/userClubHelper");
 
+// Users
 router.post("/", tryCatchWrapper(createUser()));
 router.get("/", tryCatchWrapper(getAllUsers()));
 router.get("/:userId", tryCatchWrapper(getSpecificUser()));
 
+// User Clubs
 router.post("/:userId/clubs", tryCatchWrapper(createUserClub()));
-
 router.put("/:userId/clubs/:clubId", tryCatchWrapper(editUserClub()));
 router.delete("/:userId/clubs/:clubId", tryCatchWrapper(deleteClub()));
 
