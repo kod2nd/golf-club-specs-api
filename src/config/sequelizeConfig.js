@@ -21,26 +21,24 @@ const setDatabaseName = env => {
   return HEROKU_POSTGRESQL_WHITE_URL || DB_DATABASENAME;
 };
 
-let sequelize
+let sequelize;
 
-if(DATABASE_URL){
- sequelize = new Sequelize(DATABASE_URL, {
-    dialect:  'postgres',
-    protocol: 'postgres',
-    port:     match[4],
-    host:     match[3],
-    logging:  true //false
-  })
+if (DATABASE_URL) {
+  sequelize = new Sequelize(DATABASE_URL, {
+    dialect: "postgres",
+    protocol: "postgres",
+    port: match[4],
+    host: match[3],
+    logging: true //false
+  });
 } else {
-  sequelize = new Sequelize(
-    setDatabaseName(NODE_ENV),
-    DB_USERNAME,
-    DB_PASSWORD,
-    {
-      host: "localhost",
-      dialect: "postgres"
-    }
-  );
+  sequelize = new Sequelize(HEROKU_POSTGRESQL_WHITE_URL, {
+    dialect: "postgres",
+    protocol: "postgres",
+    port: match[4],
+    host: match[3],
+    logging: true //false
+  });
 }
 
 // Models
