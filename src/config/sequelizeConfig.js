@@ -16,9 +16,9 @@ const GripModel = require("../models/GripModel");
 
 const setDatabaseName = env => {
   if (env === "test") {
-    return HEROKU_POSTGRESQL_WHITE_URL || DB_TEST_DATABASENAME;
+    return DB_TEST_DATABASENAME;
   }
-  return HEROKU_POSTGRESQL_WHITE_URL || DB_DATABASENAME;
+  return DB_DATABASENAME;
 };
 
 let sequelize;
@@ -26,12 +26,14 @@ let sequelize;
 if (DATABASE_URL) {
   sequelize = new Sequelize(DATABASE_URL, {
     dialect: "postgres",
-    protocol: "postgres",
-    port: match[4],
-    host: match[3],
+    ssl: true,
+    dialectOptions: {
+      ssl: true
+    },
     logging: true //false
   });
-} else {
+}
+if (HEROKU_POSTGRESQL_WHITE_URL) {
   sequelize = new Sequelize(HEROKU_POSTGRESQL_WHITE_URL, {
     dialect: "postgres",
     ssl: true,
@@ -42,6 +44,10 @@ if (DATABASE_URL) {
     // port: match[4],
     // host: match[3],
     // logging: true //false
+  });
+} else {
+  sequelize = new Sequelize(setDatabaseName(), DB_USERNAME, DB_PASSWORD, {
+    dialect: "postgres"
   });
 }
 
