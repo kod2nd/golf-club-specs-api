@@ -5,7 +5,8 @@ const {
   DB_TEST_DATABASENAME,
   DB_USERNAME,
   DB_PASSWORD,
-  NODE_ENV
+  NODE_ENV,
+  DATABASE_URL
 } = process.env;
 const UserModel = require("../models/UserModel");
 const ClubModel = require("../models/ClubModel");
@@ -18,16 +19,25 @@ const setDatabaseName = env => {
   }
   return DB_DATABASENAME;
 };
-
-const sequelize = new Sequelize(
-  setDatabaseName(NODE_ENV),
-  DB_USERNAME,
-  DB_PASSWORD,
-  {
-    host: "localhost",
-    dialect: "postgres"
-  }
-);
+if(DATABASE_URL){
+  sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+    dialect:  'postgres',
+    protocol: 'postgres',
+    port:     match[4],
+    host:     match[3],
+    logging:  true //false
+  })
+} else {
+  const sequelize = new Sequelize(
+    setDatabaseName(NODE_ENV),
+    DB_USERNAME,
+    DB_PASSWORD,
+    {
+      host: "localhost",
+      dialect: "postgres"
+    }
+  );
+}
 
 // Models
 const User = UserModel(sequelize, Sequelize);
