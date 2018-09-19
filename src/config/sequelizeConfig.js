@@ -19,8 +19,11 @@ const setDatabaseName = env => {
   }
   return DB_DATABASENAME;
 };
+
+let sequelize
+
 if(DATABASE_URL){
-  sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+ sequelize = new Sequelize(DATABASE_URL, {
     dialect:  'postgres',
     protocol: 'postgres',
     port:     match[4],
@@ -28,7 +31,7 @@ if(DATABASE_URL){
     logging:  true //false
   })
 } else {
-  const sequelize = new Sequelize(
+  sequelize = new Sequelize(
     setDatabaseName(NODE_ENV),
     DB_USERNAME,
     DB_PASSWORD,
