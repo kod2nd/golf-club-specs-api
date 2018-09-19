@@ -3,7 +3,6 @@ const tryCatchWrapper = asyncFunc => {
       try {
         await asyncFunc(req, res, next);
       } catch (error) {
-        console.log("ERRORRRRRRRRRRRRRRRR", error)
         next(error);
       }
     }

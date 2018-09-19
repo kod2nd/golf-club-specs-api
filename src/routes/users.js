@@ -72,7 +72,6 @@ router.put(
 );
 router.delete("/:userId/clubs/:clubId", tryCatchWrapper(async (req,res,next) => {
   await Club.destroy({where: {id: req.params.clubId}})
-
   res.status(200).json({message: DELETE_MESSAGE_SUCCESS })
 }))
 
