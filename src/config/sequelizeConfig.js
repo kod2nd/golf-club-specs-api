@@ -41,8 +41,10 @@ if (HEROKU_POSTGRESQL_WHITE_URL) {
       ssl: true
     }
   });
-} else {
-  sequelize = new Sequelize(setDatabaseName(), DB_USERNAME, DB_PASSWORD, {
+} 
+
+else {
+  sequelize = new Sequelize(setDatabaseName(NODE_ENV), DB_USERNAME, DB_PASSWORD, {
     dialect: "postgres"
   });
 }

@@ -27,6 +27,12 @@ const ClubModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     },
+    bounce: {
+      type: DataTypes.STRING
+    },
+    notes: {
+      type: DataTypes.STRING
+    },
     length: {
       type: DataTypes.STRING,
       allowNull: false
